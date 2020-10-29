@@ -2,20 +2,11 @@
 #define _VORONOI_HPP_
 
 #include <random>
-#include <unordered_set>
+#include <set>
 
 #include "Yume/GameState.hpp"
 
-
-struct pair_hash {
-  template <class T1, class T2>
-  std::size_t operator () (std::pair<T1, T2> const& pair) const {
-    std::size_t h1 = std::hash<T1>()(pair.first);
-    std::size_t h2 = std::hash<T2>()(pair.second);
-    // this is pretty bad, it needs to be replaced
-    return h1 ^ h2;
-  }
-};
+#include "Cell.hpp"
 
 
 class Voronoi : public GameState{
@@ -29,13 +20,24 @@ public:
   void display(DisplayManager* const dm, const int dt) override;
 
 private:
-  int ToroidalDistance(int x1, int y1, int x2, int y2);
+  int toroidalDistance(int x1, int y1, int x2, int y2);
 
+  void blueNoise();
+  void initVoronoi();
+
+
+  int step;
+
+  // you should be able to use this to sizz the window
+  const int window_width;
+  const int window_height;
 
   bool generate;
   bool refresh;
 
-  std::unordered_set<std::pair<int, int>, pair_hash> points;
+  std::set<std::pair<int, int>> points;
+  std::set<Edge> edges;
+  std::set<Cell> cells;
 };
 
 #endif // _VORONOI_HPP_
