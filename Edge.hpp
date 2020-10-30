@@ -8,6 +8,9 @@ class Edge {
 public:
   Edge(std::pair<int, int> p1, std::pair<int, int> p2);
 
+  bool operator<(const Edge& e) const;
+
+
   std::pair<int, int> point1;
   std::pair<int, int> point2;
 };

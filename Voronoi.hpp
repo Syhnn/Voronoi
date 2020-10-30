@@ -24,6 +24,7 @@ private:
 
   void blueNoise();
   void initVoronoi();
+  void runVoronoi();
 
 
   int step;
@@ -36,7 +37,7 @@ private:
   bool refresh;
 
   std::set<std::pair<int, int>> points;
-  std::set<Edge> edges;
+  //std::set<Edge> edges;
   std::set<Cell> cells;
 };
 

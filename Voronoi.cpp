@@ -45,6 +45,9 @@ void Voronoi::update(const int dt) {
     initVoronoi();
     break;
   case 3:
+    //
+    break;
+  case 4:
     cout << "done" << endl;
     break;
   default: break;
@@ -67,6 +70,8 @@ void Voronoi::display(DisplayManager* const dm, const int dt) {
     ++step;
     break;
   case 2:
+    dm->clear();
+    dm->setColor(0xff, 0xff, 0xff);
     for (auto c : cells) {
       dm->drawPoint(static_cast<float>(c.point.first), static_cast<float>(c.point.second));
       dm->drawPoint(static_cast<float>(c.point.first) + 1, static_cast<float>(c.point.second));
@@ -74,12 +79,20 @@ void Voronoi::display(DisplayManager* const dm, const int dt) {
       dm->drawPoint(static_cast<float>(c.point.first) - 1, static_cast<float>(c.point.second));
       dm->drawPoint(static_cast<float>(c.point.first), static_cast<float>(c.point.second) - 1);
       for (auto e : c.edges) {
-        dm->drawLine(e.point1.first, e.point1.second, e.point2.first, e.point2.second);
+        dm->drawLine(static_cast<float>(e.point1.first),
+          static_cast<float>(e.point1.second),
+          static_cast<float>(e.point2.first),
+          static_cast<float>(e.point2.second));
       }
     }
+    dm->render();
     ++step;
     break;
   case 3:
+    //
+    ++step;
+    break;
+  case 4:
     ++step;
     break;
   default: break;
@@ -121,8 +134,8 @@ void Voronoi::blueNoise() {
     int y = 0;
     int d = 0;
     for (int j(0); j < points.size() * m; ++j) {
-      int xc = dist1(e2);
-      int yc = dist2(e2);
+      int xc = static_cast<int>(dist1(e2));
+      int yc = static_cast<int>(dist2(e2));
       int dc = 100000000;
       for (auto p : points) {
         int tdc = toroidalDistance(xc, yc, p.first, p.second);
@@ -165,4 +178,29 @@ void Voronoi::initVoronoi() {
   c4.edges.push_back(Edge(make_pair( 10 * window_width, window_height / 2), make_pair(window_width / 2, window_height / 2)));
   c4.edges.push_back(Edge(make_pair(window_width / 2,  10 * window_height), make_pair(window_width / 2, window_height / 2)));
   cells.insert(c4);
+}
+
+void Voronoi::runVoronoi() {
+  for (auto p : points) {
+    Cell cell;
+    cell.point = make_pair(p.first, p.second);
+
+    for (auto c : cells) {
+      int midpoint_x = (cell.point.first + c.point.first) / 2;
+      int midpoint_y = (cell.point.second + c.point.second) / 2;
+
+      if (cell.point.second == c.point.second) {
+
+      } else {
+        int a = -(cell.point.first - c.point.first) / (cell.point.second - c.point.second);
+        int b = midpoint_y - a * midpoint_x;
+
+        for (auto e : c.edges) {
+          // test spacial relationship
+          // if e is on near side of point of cell
+          // cut it n stuff
+        }
+      }
+    }
+  }
 }

@@ -11,7 +11,7 @@ public:
   std::pair<int, int> point;
   std::vector<Edge> edges;
 
-  bool operator<(const Cell& c);
+  bool operator<(const Cell& c) const;
 };
 
 #endif // _CELL_HPP_
