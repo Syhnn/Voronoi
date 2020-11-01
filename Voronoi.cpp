@@ -196,11 +196,14 @@ void Voronoi::runVoronoi() {
         int b = midpoint_y - a * midpoint_x;
 
         for (auto e : c.edges) {
-          // test spacial relationship
-          // if e is on near side of point of cell
-          // cut it n stuff
+          // check both points of e
+
+          // if both are closer than the ab line, store it and delete it after the loop
+          // if one is closer and one is farther, cut the line at the intersection
+          // otherwise do nothing the segment remains
         }
       }
     }
+    break; // to be removed - only testing the first point for now
   }
 }
